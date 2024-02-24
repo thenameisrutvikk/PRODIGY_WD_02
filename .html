@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stopwatch</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  #timer {
+    font-size: 2em;
+    margin: 20px;
+  }
+  #controls {
+    margin: 20px;
+  }
+</style>
+</head>
+<body>
+<div id="timer">00:00:00</div>
+<div id="controls">
+  <button onclick="start()">Start</button>
+  <button onclick="stop()">Stop</button>
+  <button onclick="reset()">Reset</button>
+</div>
+
+<script>
+  let timerInterval;
+  let milliseconds = 0;
+  let seconds = 0;
+  let minutes = 0;
+  let hours = 0;
+
+  function start() {
+    clearInterval(timerInterval);
+    timerInterval = setInterval(updateTimer, 10);
+  }
+
+  function stop() {
+    clearInterval(timerInterval);
+  }
+
+  function reset() {
+    clearInterval(timerInterval);
+    milliseconds = 0;
+    seconds = 0;
+    minutes = 0;
+    hours = 0;
+    updateDisplay();
+  }
+
+  function updateTimer() {
+    milliseconds++;
+    if (milliseconds === 100) {
+      milliseconds = 0;
+      seconds++;
+    }
+    if (seconds === 60) {
+      seconds = 0;
+      minutes++;
+    }
+    if (minutes === 60) {
+      minutes = 0;
+      hours++;
+    }
+    updateDisplay();
+  }
+
+  function updateDisplay() {
+    const formattedTime = pad(hours) + ":" + pad(minutes) + ":" + pad(seconds) + ":" + pad(milliseconds, 2);
+    document.getElementById("timer").textContent = formattedTime;
+  }
+
+  function pad(num, size = 2) {
+    let s = num + "";
+    while (s.length < size) s = "0" + s;
+    return s;
+  }
+</script>
+</body>
+</html>
